@@ -1,63 +1,62 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <base target="_top">
-    <style>
-      body {
-        font-family: sans-serif;
-        text-align: center;
-        padding: 20px;
-      }
-      input {
-        font-size: 18px;
-        padding: 8px;
-        width: 80%;
-        max-width: 300px;
-      }
-      button {
-        font-size: 18px;
-        padding: 8px 16px;
-        margin-top: 10px;
-      }
-      .message {
-        margin-top: 15px;
-        font-size: 16px;
-        color: red;
-      }
-      .success {
-        color: green;
-      }
-    </style>
-  </head>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>答えを入力してください</title>
 
-  <body>
-    <h3>答えを入力してください</h3>
+<style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 30px;
+  }
+  input {
+    font-size: 18px;
+    padding: 8px;
+    width: 90%;
+    max-width: 320px;
+  }
+  button {
+    font-size: 18px;
+    padding: 8px 20px;
+    margin-top: 10px;
+  }
+  .msg {
+    margin-top: 15px;
+    font-size: 16px;
+    color: red;
+  }
+</style>
+</head>
 
-    <input type="text" id="answer" placeholder="ひらがなで入力">
-    <br>
-    <button onclick="submitAnswer()">送信</button>
+<body>
 
-    <div id="message" class="message"></div>
+<h3>答えを入力してください</h3>
 
-    <script>
-      function submitAnswer() {
-        const answer = document.getElementById("answer").value;
+<input type="text" id="answer" placeholder="ひらがなで入力">
+<br>
+<button onclick="check()">送信</button>
 
-        google.script.run
-          .withSuccessHandler(function(response) {
-            const msg = document.getElementById("message");
+<div id="msg" class="msg"></div>
 
-            if (response.result === "success") {
-              msg.innerHTML = "正解です！次へ進んでください。<br><a href='" + response.url + "' target='_top'>次のページへ</a>";
-              msg.className = "message success";
-            } else {
-              msg.textContent = response.message;
-              msg.className = "message";
-            }
-          })
-          .checkAnswer(answer);
-      }
-    </script>
-  </body>
+<script>
+function check() {
+  const correct = "たなばたじんじゃ";
+  const input = document.getElementById("answer").value.trim();
+
+  if (!input) {
+    document.getElementById("msg").textContent = "答えを入力してください";
+    return;
+  }
+
+  if (input === correct) {
+    window.location.href = "https://sites.google.com/view/next-page";
+  } else {
+    document.getElementById("msg").textContent = "答えが違います";
+  }
+}
+</script>
+
+</body>
 </html>
-
