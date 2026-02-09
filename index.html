@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+      input {
+        font-size: 18px;
+        padding: 8px;
+        width: 80%;
+        max-width: 300px;
+      }
+      button {
+        font-size: 18px;
+        padding: 8px 16px;
+        margin-top: 10px;
+      }
+      .message {
+        margin-top: 15px;
+        font-size: 16px;
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h3>答えを入力してください</h3>
+
+    <input type="text" id="answer" placeholder="ひらがなで入力">
+    <br>
+    <button onclick="submitAnswer()">送信</button>
+
+    <div id="message" class="message"></div>
+
+    <script>
+      function submitAnswer() {
+        const answer = document.getElementById("answer").value;
+
+        google.script.run
+          .withSuccessHandler(function(response) {
+            const msg = document.getElementById("message");
+
+            if (response.result === "success") {
+              msg.innerHTML = "正解です！次へ進んでください。<br><a href='" + response.url + "' target='_top'>次のページへ</a>";
+              msg.className = "message success";
+            } else {
+              msg.textContent = response.message;
+              msg.className = "message";
+            }
+          })
+          .checkAnswer(answer);
+      }
+    </script>
+  </body>
+</html>
+
